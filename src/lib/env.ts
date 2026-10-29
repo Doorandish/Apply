@@ -28,23 +28,10 @@ const optional = <T extends z.ZodType>(schema: T) =>
 
 const schema = z.object({
   // Never echo the value: it may be the password itself, set by mistake.
-  DOSSIER_PASSWORD: required(
+ DOSSIER_PASSWORD: required(
     "DOSSIER_PASSWORD",
-    `Set it to a hash of the password you want to sign in with. ${HASH_PASSWORD}.`,
-  ).pipe(
-    z.string().trim().refine(isPasswordHash, {
-      error: `DOSSIER_PASSWORD must be a hash of your password, not the password itself. ${HASH_PASSWORD} and set DOSSIER_PASSWORD to what it prints.`,
-    }),
-  ),
-  DOSSIER_SECRET: required(
-    "DOSSIER_SECRET",
-    `Set it to a random string of at least ${SECRET_MIN_LENGTH} characters, ${GENERATE_SECRET}.`,
-  ).pipe(
-    z.string().min(SECRET_MIN_LENGTH, {
-      error: (issue) =>
-        `DOSSIER_SECRET is too short (${String(issue.input).length} characters). Use at least ${SECRET_MIN_LENGTH} random characters, ${GENERATE_SECRET}.`,
-    }),
-  ),
+    "Set your login password.",
+  ).pipe(z.string().trim()),
   DATABASE_URL: required(
     "DATABASE_URL",
     "Set it to your PostgreSQL connection string, e.g. postgresql://user:password@host:5432/dossier.",

@@ -32,6 +32,15 @@ const schema = z.object({
     "DOSSIER_PASSWORD",
     "Set your login password.",
   ).pipe(z.string().trim()),
+  DOSSIER_SECRET: required(
+    "DOSSIER_SECRET",
+    `Set it to a random string of at least ${SECRET_MIN_LENGTH} characters, ${GENERATE_SECRET}.`,
+  ).pipe(
+    z.string().min(SECRET_MIN_LENGTH, {
+      error: (issue) =>
+        `DOSSIER_SECRET is too short (${String(issue.input).length} characters). Use at least ${SECRET_MIN_LENGTH} random characters, ${GENERATE_SECRET}.`,
+    }),
+  ),
   DATABASE_URL: required(
     "DATABASE_URL",
     "Set it to your PostgreSQL connection string, e.g. postgresql://user:password@host:5432/dossier.",
